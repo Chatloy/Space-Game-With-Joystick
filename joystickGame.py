@@ -18,7 +18,6 @@ abc = "abcdefghijklmnopqrstuvwxyz"
 
 def setinitials():
     global initials, currentLetterNum, currentLetter, initialsNum, text, screen, pressed
-    print("I am running")
     if joystick.Y >= 200:
         if pressed == False:
             currentLetterNum -= 1
@@ -42,7 +41,7 @@ def setinitials():
     currentLetter = abc[currentLetterNum]
     initialsList = list(initials)
     if initialsNum != 3:
-        print(initialsNum)
+        #print(initialsNum)
         initialsList[initialsNum] = currentLetter
         initials = "".join(initialsList)
     else:
@@ -157,7 +156,7 @@ if __name__ == "__main__":
         joystick.loop()
         stop = setinitials()
         pygame.display.flip()
-        print(initials)
+        #print(initials)
         time.sleep(0.01)
     while running:
         sprite.setBackground((0,0,0))
@@ -178,7 +177,7 @@ if __name__ == "__main__":
                     badGuys.append(sprite.Player(screen, (0,0,0), 40, random.randint(0,670), 50 + random.randint(-30,30), True, 0))
             if sound != []:
                 if sound[1] > 0:
-                    print(sound[1])
+                    #print(sound[1])
                     boomtone.startSound(sound)
                     sound[1] = sound[1] - 0.01
                 else:
