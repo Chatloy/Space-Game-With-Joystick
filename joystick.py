@@ -29,8 +29,8 @@ def loop():
     global X, Y, Z
 
     val_z = GPIO.input(Z_Pin)
-    val_y = adc.analogRead(0)
-    val_x = adc.analogRead(2)
+    val_y = adc.analogRead(2)
+    val_x = adc.analogRead(0)
     val_q = adc.analogRead(4)
     X = val_x
     Y = val_y

@@ -4,6 +4,7 @@ import pygame
 import time
 import random
 import boomtone
+import leaderBoard
 
 state = "lobby"
 
@@ -11,9 +12,53 @@ sprite.init()
 
 boom = boomtone.SONGS["boom"]
 
+font = sprite.newFont("freesansbold", 30)
+
+abc = "abcdefghijklmnopqrstuvwxyz"
+
+def setinitials():
+    global initials, currentLetterNum, currentLetter, initialsNum, text, screen, pressed
+    print("I am running")
+    if joystick.Y >= 200:
+        if pressed == False:
+            currentLetterNum -= 1
+            pressed = True
+    elif joystick.Y <= 100:
+        if pressed == False:
+            currentLetterNum += 1
+            pressed = True
+    elif joystick.X >= 200:
+        if pressed == False:
+            pressed = True
+            initialsNum -= 1
+    elif joystick.X <= 100:
+        if pressed == False:
+            pressed = True
+            initialsNum += 1
+    else:
+        pressed = False
+    
+    currentLetterNum = currentLetterNum % 26
+    currentLetter = abc[currentLetterNum]
+    initialsList = list(initials)
+    if initialsNum != 3:
+        print(initialsNum)
+        initialsList[initialsNum] = currentLetter
+        initials = "".join(initialsList)
+    else:
+        return True
+
+    text = font.render(initials, True, (255,255,255))
+    screen.blit(text,
+    (50 - text.get_width() // 2, 100 - text.get_height() // 2))
+
+
+
 def setup():
-    global sound, pressed, playButton, quitButton, player, badGuys, bulletList, running, screen
+    global sound, pressed, playButton, quitButton, player, badGuys, bulletList, running, screen, pointer, score
     sound = []
+
+    score = 0
 
     #yellow = sprite.newColor((255,255,0))
     #yellow = pygame.color.Color(255,255,0)
@@ -27,6 +72,9 @@ def setup():
 
     quitButton = sprite.Player(screen, (0,0,0), 160, 520,500, True, 0)
     quitButton.setImage("quitButton.png")
+
+    pointer = sprite.Player(screen, (0,0,0), 50, 0,400,True, 0)
+    pointer.setImage("pointer.png")
 
     player = sprite.Player(screen, (0,0,0), 50, 335, 500, True, 0.8)
     player.setImage("faceInverted.png")
@@ -66,7 +114,7 @@ def joyControls():
 
 def updateBadGuys():
     global sound
-    global state
+    global state, score
     if badGuys != []:
         for i in badGuys:
             i.setImage("spaceShip.png")
@@ -78,8 +126,12 @@ def updateBadGuys():
             
             for bullet in bulletList:
                 if i.touching(bullet):
+                    score = score + 10
                     badGuys.remove(i)
                     sound = ["c6", 0.05]
+            
+            if i.y > 700:
+                badGuys.remove(i)
 
 
 def updateBullets():
@@ -87,14 +139,35 @@ def updateBullets():
         i.update()
         i.y = i.y - 10
 
+def leaderboard(): 
+    leaderboard = leaderBoard.getLeaderboard('spaceJoystick')
+    return leaderboard["leaders"]
+
+
+
 if __name__ == "__main__":
     setup()
+    initials = "aaa"
+    currentLetterNum = 0
+    currentLetter = abc[currentLetterNum]
+    initialsNum = 0
+    stop = False
+    while not stop:
+        sprite.setBackground((0,0,0))
+        joystick.loop()
+        stop = setinitials()
+        pygame.display.flip()
+        print(initials)
+        time.sleep(0.01)
     while running:
         sprite.setBackground((0,0,0))
         if state == "play":
             player.update()
             updateBadGuys()
             updateBullets()
+            text = font.render("Score is: "+str(score), True, (255,255,255))
+            screen.blit(text,
+            (50 - text.get_width() // 2, 100 - text.get_height() // 2))
             pygame.display.flip()
             joyControls()
             #player.move(sprite.getKeys())
@@ -121,18 +194,32 @@ if __name__ == "__main__":
                 joystick.loop()
             state = "play"
         elif state == "dead":
+            leaderBoard.addToLeaderBoard(initials, score)
             sprite.setBackground((0,0,0))
             playButton.x = 166
             playButton.update()
             quitButton.update()
             joystick.loop()
             choice = "play"
+            leaders = leaderboard()
             while joystick.Z == 1:
+                if choice == "play":
+                    pointer.x = 166
+                else:
+                    pointer.x = 520
                 sprite.setBackground((0,0,0))
                 playButton.update()
                 quitButton.update()
+                pointer.update()
                 joystick.loop()
                 joystick.loop()
+                j = 1
+                for i in leaders:
+                    text = font.render(i["name"]+":          "+str(i["score"]), True, (255,255,255))
+                    screen.blit(text,
+                    (335 - text.get_width() // 2, (25*j) - text.get_height() // 2))
+                    j = j + 1
+
                 pygame.display.flip()
                 if joystick.X >= 200:
                     choice = "play"
