@@ -13,7 +13,7 @@ def writeLeaderboard(leaderBoard):
     table.put_item(Item=leaderBoard)
 
 def getDDB():
-    dynamodb = boto3.resource('dynamodb',config=Config(region_name="us-west-2"),aws_access_key_id="AKIA33DTQL6GAECF424Z" ,aws_secret_access_key="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")
+    dynamodb = boto3.resource('dynamodb',config=Config(region_name="us-west-2"))
     return dynamodb
 
 def getLeaderboard(gameID):
