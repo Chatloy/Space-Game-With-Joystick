@@ -8,7 +8,7 @@
 import random, pygame, sys, smbus, time
 from pygame.locals import *
 
-FPS = 30
+FPS = 3
 MULTIPLIER = 18
 WINDOWWIDTH = 96*MULTIPLIER
 WINDOWHEIGHT = 54*MULTIPLIER
