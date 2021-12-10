@@ -76,7 +76,7 @@ def runGame():
     while True: # main game loop
         for event in pygame.event.get(): # event handling loop 
             end_time=int(time.time())
-            diff= (end_time - start_time) <10 or (end_time - start_time) >20
+            diff= True
             if event.type == QUIT:
                 terminate()
             elif event.type == KEYDOWN :
@@ -96,16 +96,18 @@ def runGame():
             bus_data = bus.read_i2c_block_data(addr, 0x03, 5)
         except Exception as e:
             print(e)
+        end_time=int(time.time())
+        diff= (end_time - start_time) <10 or (end_time - start_time) >20
         X = (bus_data[0]<<8 | bus_data[1])>>6
         Y = (bus_data[2]<<8 | bus_data[3])>>6
         if X < 450:
-            direction = RIGHT
+            direction = RIGHT if diff else LEFT
         elif 575 < X:
-            direction = LEFT
+            direction = LEFT if diff else RIGHT
         elif Y < 450:
-            direction = DOWN
+            direction = DOWN if diff else UP
         elif 575 < Y:
-            direction = UP
+            direction = UP if diff else DOWN
         
 
         # check if the worm has hit itself or the edge
@@ -117,7 +119,7 @@ def runGame():
                 p.stop()
                 return # game over
 
-        # check if worm has eaten an apply
+        # check if worm has eaten an appl
         if wormCoords[HEAD]['x'] == apple['x'] and wormCoords[HEAD]['y'] == apple['y']:
             # don't remove worm's tail segment
             apple = getRandomLocation() # set a new apple somewhere
