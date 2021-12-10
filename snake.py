@@ -1,5 +1,6 @@
 import random, pygame, sys, smbus, time
 from pygame.locals import *
+import vlc
 
 FPS = 3
 MULTIPLIER = 18
