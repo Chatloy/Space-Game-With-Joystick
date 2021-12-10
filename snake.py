@@ -69,7 +69,8 @@ def runGame():
 
     start =time.time()
     start_time= int(start)
-    diff = True
+    p=vlc.MediaPlayer("tone.mp3")
+    p.play()
     while True: # main game loop
         for event in pygame.event.get(): # event handling loop 
             end_time=int(time.time())
