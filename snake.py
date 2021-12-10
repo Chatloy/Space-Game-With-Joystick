@@ -1,7 +1,7 @@
 import random, pygame, sys, smbus, time
 from pygame.locals import *
 
-FPS = 8
+FPS = 5
 MULTIPLIER = 18
 WINDOWWIDTH = 32*MULTIPLIER
 WINDOWHEIGHT = 18*MULTIPLIER
@@ -72,7 +72,7 @@ def runGame():
     while True: # main game loop
         for event in pygame.event.get(): # event handling loop 
             end_time=int(time.time())
-            diff= end_time < (start_time + 10)        
+            diff= end_time < (start_time + 8)        
             if event.type == QUIT:
                 terminate()
             elif event.type == KEYDOWN :
