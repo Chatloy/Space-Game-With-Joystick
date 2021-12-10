@@ -97,7 +97,7 @@ def runGame():
         except Exception as e:
             print(e)
         end_time=int(time.time())
-        diff= (end_time - start_time) <10 or (end_time - start_time) >20
+        diff= (end_time - start_time) <12 or (end_time - start_time) >20
         X = (bus_data[0]<<8 | bus_data[1])>>6
         Y = (bus_data[2]<<8 | bus_data[3])>>6
         if X < 450:
