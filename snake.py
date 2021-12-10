@@ -46,7 +46,6 @@ def main():
     showStartScreen()
     while True:
         runGame()
-        p.stop()
         showGameOverScreen()
 
 
@@ -111,9 +110,11 @@ def runGame():
 
         # check if the worm has hit itself or the edge
         if wormCoords[HEAD]['x'] == -1 or wormCoords[HEAD]['x'] == CELLWIDTH or wormCoords[HEAD]['y'] == -1 or wormCoords[HEAD]['y'] == CELLHEIGHT:
+            p.stop()
             return # game over
         for wormBody in wormCoords[1:]:
             if wormBody['x'] == wormCoords[HEAD]['x'] and wormBody['y'] == wormCoords[HEAD]['y']:
+                p.stop()
                 return # game over
 
         # check if worm has eaten an apply
