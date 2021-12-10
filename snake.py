@@ -69,13 +69,11 @@ def runGame():
 
     start =time.time()
     start_time= int(start)
-    
+    diff = True
     while True: # main game loop
         for event in pygame.event.get(): # event handling loop 
             end_time=int(time.time())
-            diff= (end_time - start_time) <8
-            if diff==False:
-                start_time= int(time.time())      
+            diff= (end_time - start_time) <8 or (end_time - start_time) >16
             if event.type == QUIT:
                 terminate()
             elif event.type == KEYDOWN :
