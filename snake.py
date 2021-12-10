@@ -41,10 +41,12 @@ def main():
     flamefile = 'Pixel-flame.png'
     flame = pygame.image.load(flamefile).convert_alpha()
     flamecell = pygame.transform.scale(flame,(CELLSIZE,CELLSIZE))
+    p=vlc.MediaPlayer("tone.mp3")
     
     showStartScreen()
     while True:
         runGame()
+        p.stop()
         showGameOverScreen()
 
 
@@ -70,7 +72,6 @@ def runGame():
 
     start =time.time()
     start_time= int(start)
-    p=vlc.MediaPlayer("tone.mp3")
     p.play()
     while True: # main game loop
         for event in pygame.event.get(): # event handling loop 
