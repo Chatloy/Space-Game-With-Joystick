@@ -1,10 +1,3 @@
-# Wormy (a Nibbles clone)
-# By Al Sweigart al@inventwithpython.com
-# http://inventwithpython.com/pygame
-# Released under a "Simplified BSD" license
-
-#KRT 14/06/2012 modified Start Screen and Game Over screen to cope with mouse events
-#KRT 14/06/2012 Added a non-busy wait to Game Over screen to reduce processor loading from near 100%
 import random, pygame, sys, smbus, time
 from pygame.locals import *
 
@@ -74,19 +67,23 @@ def runGame():
     apple = getRandomLocation()
 
 
+    start =time.time()
+    start_time= int(start)
     while True: # main game loop
-        for event in pygame.event.get(): # event handling loop          
+        for event in pygame.event.get(): # event handling loop 
+            end_time=int(time.time())
+            diff= end_time < (start_time + 10)        
             if event.type == QUIT:
                 terminate()
-            elif event.type == KEYDOWN:
+            elif event.type == KEYDOWN :
                 if (event.key == K_LEFT or event.key == K_a) and direction != RIGHT:
-                    direction = LEFT
+                    direction = LEFT if diff else RIGHT
                 elif (event.key == K_RIGHT or event.key == K_d) and direction != LEFT:
-                    direction = RIGHT
+                    direction = RIGHT if diff else LEFT
                 elif (event.key == K_UP or event.key == K_w) and direction != DOWN:
-                    direction = UP
+                    direction = UP if diff else DOWN
                 elif (event.key == K_DOWN or event.key == K_s) and direction != UP:
-                    direction = DOWN
+                    direction = DOWN if diff else UP
                 elif event.key == K_ESCAPE:
                     terminate()
                     
